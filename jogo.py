@@ -3819,3 +3819,10 @@ DADOS = {
   }
 }
 
+tentativas = 20
+#print('Comandos: - dicas')
+
+
+
+while tentativas>0:
+  pergunta=input(str('Qual seu palpite?'))
