@@ -3821,14 +3821,20 @@ DADOS = {
 
 tentativas = 20
 #print('Comandos: - dicas')
+paisNormalizado = funcoes.normaliza(DADOS)
+paisSorteado = funcoes.sorteia_paises(paisNormalizado)
+listaTentativas = []
 
-paisSorteado = funcoes.sorteia_paises(DADOS)
-print(paisSorteado)
-
-while tentativas>0:
-  resposta=input(str('Qual seu palpite?'))
-  tentativas-=1
+while tentativas > 0:
+  resposta = input(str('Qual seu palpite? '))
+  listaTentativas.append(resposta)
+  listaPaises = funcoes.esta_na_lista(resposta, paisNormalizado.keys())
   if resposta == paisSorteado:
-    print("CABAÇO ACERTOU")
+    print('Acertou')
+    break
   else:
-    print(f"Você tem {tentativas} tentativas restantes")
+    if listaPaises == True:
+      tentativas -= 1
+      print('Você ainda tem {} tentativa(s)'.format(tentativas))
+    else:
+      print('Esse pais nao esta na lista')

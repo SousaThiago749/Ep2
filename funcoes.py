@@ -10,11 +10,9 @@ def normaliza (dicionario):
     return novo_dicionario
 
 def sorteia_paises(dicio_paises):
-    cont = list(dicio_paises.values())
-    contSort = choice(cont)
-    paises = list(contSort.keys())
-    paiseSort = choices(paises)
-    return paiseSort
+    paises = list(dicio_paises.keys())
+    paisSorteado = choice(paises)
+    return paisSorteado
 
 def haversine(raio, lat1, long1, lat2, long2):
   lat1 = radians(lat1) 
@@ -41,16 +39,15 @@ def adciona_em_ordem(pais,dist,lista):
     lista.insert(contador, pais_dist)
     return lista
     
-def esta_na_lista(pais, paises):
-    x=0
-    for Estado in paises:
-        if pais ==Estado[0]:
-            x=1
-    if x==1:
+def esta_na_lista (pais, lista):
+    esta = 0
+    for i in lista:
+        if pais == i:
+            esta = 1
+    if esta == 1:
         return True
-    if x==0:
+    else:
         return False
-
 def sorteia_letra (palavra, lista_restrita):
     especiais = ['.', ',', '-', ';', ' ', "'"]
     palavra = palavra.lower()
