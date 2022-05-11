@@ -3822,7 +3822,13 @@ DADOS = {
 tentativas = 20
 #print('Comandos: - dicas')
 
-
+paisSorteado = funcoes.sorteia_paises(DADOS)
+print(paisSorteado)
 
 while tentativas>0:
-  pergunta=input(str('Qual seu palpite?'))
+  resposta=input(str('Qual seu palpite?'))
+  tentativas-=1
+  if resposta == paisSorteado:
+    print("CABAÇO ACERTOU")
+  else:
+    print(f"Você tem {tentativas} tentativas restantes")

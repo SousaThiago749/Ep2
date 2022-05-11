@@ -1,4 +1,4 @@
-import random
+from random import *
 from math import*
 
 def normaliza (dicionario):
@@ -10,10 +10,11 @@ def normaliza (dicionario):
     return novo_dicionario
 
 def sorteia_paises(dicio_paises):
-    paises=[]
-    for i in paises.keys():
-        paises.append(i)
-    sorteado=random.choice(paises)
+    cont = list(dicio_paises.values())
+    contSort = choice(cont)
+    paises = list(contSort.keys())
+    paiseSort = choices(paises)
+    return paiseSort
 
 def haversine(raio, lat1, long1, lat2, long2):
   lat1 = radians(lat1) 
