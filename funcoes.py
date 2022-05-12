@@ -30,6 +30,15 @@ def haversine(raio, lat1, long1, lat2, long2):
 
   return distancia
 
+def pega_lat_long_de_pais(dadosnormalizados, pais_sorteado, resposta):
+    lat_resposta = dadosnormalizados[resposta]['geo']['latitude']
+    long_resposta = dadosnormalizados[resposta]['geo']['longitude']
+    lat_sorteado = dadosnormalizados[pais_sorteado]['geo']['latitude']
+    long_sorteado = dadosnormalizados[pais_sorteado]['geo']['longitude']
+
+    return lat_resposta, long_resposta, lat_sorteado, long_sorteado
+    
+
 def adciona_em_ordem(pais,dist,lista):
     contador = 0
     pais_dist=[pais, dist]
@@ -93,21 +102,21 @@ def desenha_menu_dicas():
     print('0. Sem dica')
     print('----------------------------------------')
 
-def mostra_inventario(lista_cor_bandeira, lista_distancias):
+def mostra_inventario(lista_cor_bandeira, dict_distancias):
     print('')
     print('Distâncias: ')
     
-    for distancia in lista_distancias:
-        print("     " + distancia)
+    for pais_chutado, dic_valor in dict_distancias.items():
+        print("     " + str(int(dic_valor['distancia'])) + ' km -> ' + pais_chutado)
+        print("")
+
+    print('Dicas: ')
+    if len(lista_cor_bandeira) != 0: 
+        print(' - Cores da bandeira: ', end='')
+        for dica in lista_cor_bandeira:
+            print(dica, end='')
     
     print('')
-    print('Dicas: ')
-
-    print(' - Cores da bandeira: ', end='')
-    for dica in lista_cor_bandeira:
-        print(dica, end='')
-
-    print('\n')
         
     
 def mostra_dica_escolhida(dica, dados, pais, lista_cores_dicas):

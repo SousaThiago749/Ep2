@@ -3839,6 +3839,8 @@ def main():
     lista_dica_cores = []
     lista_distancias = []
     lista_chutes = []
+
+    distancias = {}
     
     pais = funcoes.sorteia_pais(DADOS_NORMALIZADOS)
 
@@ -3879,8 +3881,23 @@ def main():
               terminou = True
             else:
               tentativas-=1
-              print('Você tem {} tentativa(s)'.format(tentativas))
               lista_chutes.append(resposta)
+
+              lat1, long1, lat2, long2 = funcoes.pega_lat_long_de_pais(DADOS_NORMALIZADOS, pais, resposta)
+              dist = funcoes.haversine(EARTH_RADIUS, lat1, long1, lat2, long2)
+
+              cor = ''
+              if dist < 2000:
+                cor = 'yellow'
+              elif dist > 2000 and dist < 10000:
+                cor = 'red'
+              else:
+                cor = 'gray'
+
+              distancias[resposta] = {'distancia': dist, 'cor': cor}
+
+              funcoes.mostra_inventario(lista_dica_cores, distancias)
+              print('Você tem {} tentativa(s)'.format(tentativas)) #colocar barra n no final de tentativa(s)
           else:
             print('Você ja tentou esse país')
 
