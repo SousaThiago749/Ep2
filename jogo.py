@@ -1,5 +1,7 @@
-import math 
+import math
+from pyclbr import Function 
 import random
+
 import funcoes
 
 EARTH_RADIUS = 6371
@@ -3821,7 +3823,43 @@ DADOS = {
 
 def main():
   funcoes.DesenhaInterface()
-  DADOS_NORMALIZADOS=funcoes.normaliza(DADOS)
+
+  DADOS_NORMALIZADOS = funcoes.normaliza(DADOS)
+
+  continuar = True
+
+  while continuar:
+    tentativas = 20
+
+    pais = funcoes.sorteia_pais(DADOS_NORMALIZADOS)
+
+    terminou = False
+
+    while not terminou:
+
+      resposta = str(input('Qual o seu palpite? '))
+
+      if resposta == 'dica' or resposta == 'dicas':
+
+        funcoes.desenha_menu_dicas()
+
+        dica_valida = False
+
+        while not dica_valida:
+          opcao_dicas = str(input('Escolha sua opção [0/1/2/3/4/5]: '))
+
+          lista_opcoes = ['1', '2', '3', '4', '5', '0']
+
+          if opcao_dicas in lista_opcoes:
+            
+            dica_valida = True
+
+          else:
+            print('Opção inválida')
+
+            
+
+    
 
 
 

@@ -9,7 +9,7 @@ def normaliza (dicionario):
             novo_dicionario[paises] = informacoes
     return novo_dicionario
 
-def sorteia_paises(dicio_paises):
+def sorteia_pais(dicio_paises):
     paises = list(dicio_paises.keys())
     paisSorteado = choice(paises)
     return paisSorteado
@@ -80,5 +80,18 @@ def DesenhaInterface():
     print('     dica        - entra no mercado de dicas')
     print('     desisto     - desiste da rodada')
     print('     inventario  - exibe sua posição')
+
+def desenha_menu_dicas():
+
+    print('Mercado de Dicas')
+    print('----------------------------------------')
+    print('1. Cor da bandeira  - custa 4 tentativas')
+    print('2. Letra da capital - custa 3 tentativas')
+    print('3. Área             - custa 6 tentativas')
+    print('4. População        - custa 5 tentativas')
+    print('5. Continente       - custa 7 tentativas')
+    print('0. Sem dica')
+    print('----------------------------------------')
+    
     
     
