@@ -3825,12 +3825,21 @@ def main():
   funcoes.DesenhaInterface()
 
   DADOS_NORMALIZADOS = funcoes.normaliza(DADOS)
+  #print(DADOS_NORMALIZADOS)
 
   continuar = True
 
   while continuar:
     tentativas = 20
 
+    lista_de_paises = []
+    for pais in DADOS_NORMALIZADOS.keys():
+      lista_de_paises.append(pais)
+
+    lista_dica_cores = []
+    lista_distancias = []
+    lista_chutes = []
+    
     pais = funcoes.sorteia_pais(DADOS_NORMALIZADOS)
 
     terminou = False
@@ -3846,7 +3855,7 @@ def main():
         dica_valida = False
 
         while not dica_valida:
-          opcao_dicas = str(input('Escolha sua opção [0/1/2/3/4/5]: '))
+          opcao_dicas = str(input('Escolha sua opção [0|1|2|3|4|5]: '))
 
           lista_opcoes = ['1', '2', '3', '4', '5', '0']
 
@@ -3856,6 +3865,30 @@ def main():
 
           else:
             print('Opção inválida')
+        
+        cor = funcoes.mostra_dica_escolhida(opcao_dicas, DADOS_NORMALIZADOS, pais, lista_dica_cores)
+        lista_dica_cores.append(cor)
+        funcoes.mostra_inventario(lista_dica_cores, lista_distancias)
+    
+      else:
+        if resposta not in lista_de_paises:
+          print('Pais desconhecido')
+        else:
+          if resposta not in lista_chutes:
+            if resposta == pais:
+              terminou = True
+            else:
+              tentativas-=1
+              print('Você tem {} tentativa(s)'.format(tentativas))
+              lista_chutes.append(resposta)
+          else:
+            print('Você ja tentou esse país')
+
+
+
+        
+
+
 
             
 

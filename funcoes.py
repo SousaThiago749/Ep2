@@ -75,7 +75,7 @@ def DesenhaInterface():
     print('| Bem vindo ao Insper Países |')
     print('|                            |')
     print(' ==== Design de Software ====')
-    print('')
+    print('\n')
     print('Comandos:')
     print('     dica        - entra no mercado de dicas')
     print('     desisto     - desiste da rodada')
@@ -92,6 +92,41 @@ def desenha_menu_dicas():
     print('5. Continente       - custa 7 tentativas')
     print('0. Sem dica')
     print('----------------------------------------')
+
+def mostra_inventario(lista_cor_bandeira, lista_distancias):
+    print('')
+    print('Distâncias: ')
     
+    for distancia in lista_distancias:
+        print("     " + distancia)
     
+    print('')
+    print('Dicas: ')
+
+    print(' - Cores da bandeira: ', end='')
+    for dica in lista_cor_bandeira:
+        print(dica, end='')
+
+    print('\n')
+        
+    
+def mostra_dica_escolhida(dica, dados, pais, lista_cores_dicas):
+
+    if dica == '1':
+        lista_cores = []
+        for cor in dados[pais]['bandeira'].keys():
+            lista_cores.append(cor)
+
+        cor = choice(lista_cores)
+
+        while cor in lista_cores_dicas:
+            cor = choice(lista_cores)
+
+        return cor
+
+    if dica == '2':
+        print()
+
+
+
     
