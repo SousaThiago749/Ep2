@@ -1,7 +1,5 @@
 import math
-from pyclbr import Function 
 import random
-
 import funcoes
 
 EARTH_RADIUS = 6371
@@ -3887,6 +3885,8 @@ def main():
               dist = funcoes.haversine(EARTH_RADIUS, lat1, long1, lat2, long2)
 
               cor = ''
+              if dist < 1000:
+                cor = 'blue'
               if dist < 2000:
                 cor = 'yellow'
               elif dist > 2000 and dist < 10000:
@@ -3897,7 +3897,7 @@ def main():
               distancias[resposta] = {'distancia': dist, 'cor': cor}
 
               funcoes.mostra_inventario(lista_dica_cores, distancias)
-              print('Você tem {} tentativa(s)'.format(tentativas)) #colocar barra n no final de tentativa(s)
+              print('Você tem {} tentativa(s)\n'.format(tentativas)) #colocar barra n no final de tentativa(s)
           else:
             print('Você ja tentou esse país')
 
