@@ -1,6 +1,6 @@
 from random import *
 from math import*
-
+import random
 def normaliza (dicionario):
     novo_dicionario = {}
     for continentes, informacoes_paises in dicionario.items():
@@ -58,6 +58,7 @@ def esta_na_lista (pais, lista):
         return True
     else:
         return False
+
 def sorteia_letra (palavra, lista_restrita):
     especiais = ['.', ',', '-', ';', ' ', "'"]
     palavra = palavra.lower()
@@ -84,7 +85,9 @@ def DesenhaInterface():
     print('|                            |')
     print('| Bem vindo ao Insper Países |')
     print('|                            |')
+    
     print(' ==== Design de Software ====')
+
     print('\n')
     print('Comandos:')
     print('     dica        - entra no mercado de dicas')
@@ -103,7 +106,7 @@ def desenha_menu_dicas():
     print('0. Sem dica')
     print('----------------------------------------')
 
-def mostra_inventario(lista_cor_bandeira, dict_distancias):
+def mostra_inventario(lista_cor_bandeira, dict_distancias, lista_letras_capitais, lista_area):
     print('')
     print('Distâncias: ')
     
@@ -115,14 +118,24 @@ def mostra_inventario(lista_cor_bandeira, dict_distancias):
     if len(lista_cor_bandeira) != 0: 
         print(' - Cores da bandeira: ', end='')
         for dica in lista_cor_bandeira:
-            print(dica, end='')
+            print(dica + ', ', end='')
+
+    if len(lista_letras_capitais) != 0:
+        print(' - Letras da capital: ', end='')
+        for letra in lista_letras_capitais:
+            print(letra + ', ', end='')
+
+    if len(lista_area) != 0:
+        print(' - Área: ' + str(lista_area[0]) + ' km²')
     
     print('')
         
     
-def mostra_dica_escolhida(dica, dados, pais, lista_cores_dicas):
+def mostra_dica_escolhida(dica, dados, pais, lista_cores_dicas, lista_area, lista_letras_capital):
+    if dica == '0':
+        return 
 
-    if dica == '1':
+    elif dica == '1':
         lista_cores = []
         for cor in dados[pais]['bandeira'].keys():
             lista_cores.append(cor)
@@ -132,11 +145,50 @@ def mostra_dica_escolhida(dica, dados, pais, lista_cores_dicas):
         while cor in lista_cores_dicas:
             cor = choice(lista_cores)
 
-        return cor
+        lista_cores_dicas.append(cor)
 
-    if dica == '2':
-        print()
+    elif dica == '2':
+        tamanho_capital = len(dados[pais]['capital'])
 
-
-
+        if len(lista_letras_capital) < tamanho_capital:
+            letra_sorteada = sorteia_letra_capital(dados, pais, lista_letras_capital)
+            lista_letras_capital.append(letra_sorteada)
     
+    elif dica == '3':
+        if len(lista_area) == 0:
+            area = dados[pais]['area']
+            lista_area.append(area)
+
+    elif dica == '4':
+        dica_populacao = False
+        if dica_populacao == False:
+            pop = dados[pais]['populacao']
+            dica_populacao == True
+            return pop
+        else:
+            return None
+
+    elif dica == '5':
+        dica_continente = False
+        if dica_continente == True:
+            continente = dados.keys()
+            dica_continente == True
+            return continente
+        else:
+            return None
+
+def sorteia_letra_capital(dados, pais, lista_letras):
+    especiais = ['.', ',', '-', ';', ' ', "'"]
+
+    capital = dados[pais]['capital'].lower()
+
+    for especial in especiais:
+        capital = capital.replace(especial, '')
+        
+    letra = choice(capital)
+
+    while letra in lista_letras:
+        letra = choice(capital)
+
+    return letra
+

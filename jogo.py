@@ -1,7 +1,7 @@
 import math
 import random
 import funcoes
-from termcolor import colored
+
 
 EARTH_RADIUS = 6371
 
@@ -3838,6 +3838,8 @@ def main():
     lista_dica_cores = []
     lista_distancias = []
     lista_chutes = []
+    lista_area = []
+    lista_letras_capital = []
 
     distancias = {}
     
@@ -3868,9 +3870,8 @@ def main():
           else:
             print('Opção inválida')
         
-        cor = funcoes.mostra_dica_escolhida(opcao_dicas, DADOS_NORMALIZADOS, pais, lista_dica_cores)
-        lista_dica_cores.append(cor)
-        funcoes.mostra_inventario(lista_dica_cores, lista_distancias)
+        funcoes.mostra_dica_escolhida(opcao_dicas, DADOS_NORMALIZADOS, pais, lista_dica_cores, lista_area, lista_letras_capital)
+        funcoes.mostra_inventario(lista_dica_cores, distancias, lista_letras_capital, lista_area)
       elif resposta == 'desisto':
               desistencia = input(str('Tem certeza que deseja desistir da rodada? [s|n] '))
               if desistencia == 's':
@@ -3928,9 +3929,5 @@ def main():
 
 
             
-
-    
-
-
 
 main()
