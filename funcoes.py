@@ -94,16 +94,15 @@ def DesenhaInterface():
     print('     desisto     - desiste da rodada')
     print('     inventario  - exibe sua posição')
 
-def desenha_menu_dicas():
+def desenha_menu_dicas(dict_opcoes, tentativas):
 
     print('Mercado de Dicas')
     print('----------------------------------------')
-    print('1. Cor da bandeira  - custa 4 tentativas')
-    print('2. Letra da capital - custa 3 tentativas')
-    print('3. Área             - custa 6 tentativas')
-    print('4. População        - custa 5 tentativas')
-    print('5. Continente       - custa 7 tentativas')
-    print('0. Sem dica')
+    
+    for nome, tentativa in dict_opcoes.items():
+        if tentativa < tentativas:
+            print(nome + ' - custa ' + str(tentativa) + ' tentativas')
+
     print('----------------------------------------')
 
 def mostra_inventario(lista_cor_bandeira, dict_distancias, lista_letras_capitais, lista_area):
@@ -116,26 +115,23 @@ def mostra_inventario(lista_cor_bandeira, dict_distancias, lista_letras_capitais
 
     print('Dicas: ')
     if len(lista_cor_bandeira) != 0: 
-        print(' - Cores da bandeira: ', end='')
+        print('\n - Cores da bandeira: ', end='')
         for dica in lista_cor_bandeira:
             print(dica + ', ', end='')
 
     if len(lista_letras_capitais) != 0:
-        print(' - Letras da capital: ', end='')
+        print('\n - Letras da capital: ', end='')
         for letra in lista_letras_capitais:
             print(letra + ', ', end='')
 
     if len(lista_area) != 0:
-        print(' - Área: ' + str(lista_area[0]) + ' km²')
+        print('\n - Área: ' + str(lista_area[0]) + ' km²')
     
     print('')
         
     
 def mostra_dica_escolhida(dica, dados, pais, lista_cores_dicas, lista_area, lista_letras_capital):
-    if dica == '0':
-        return 
-
-    elif dica == '1':
+    if dica == '1':
         lista_cores = []
         for cor in dados[pais]['bandeira'].keys():
             lista_cores.append(cor)
@@ -146,6 +142,7 @@ def mostra_dica_escolhida(dica, dados, pais, lista_cores_dicas, lista_area, list
             cor = choice(lista_cores)
 
         lista_cores_dicas.append(cor)
+        return 4
 
     elif dica == '2':
         tamanho_capital = len(dados[pais]['capital'])
@@ -153,11 +150,13 @@ def mostra_dica_escolhida(dica, dados, pais, lista_cores_dicas, lista_area, list
         if len(lista_letras_capital) < tamanho_capital:
             letra_sorteada = sorteia_letra_capital(dados, pais, lista_letras_capital)
             lista_letras_capital.append(letra_sorteada)
+        return 3
     
     elif dica == '3':
         if len(lista_area) == 0:
             area = dados[pais]['area']
             lista_area.append(area)
+        return 6
 
     elif dica == '4':
         dica_populacao = False
@@ -176,6 +175,9 @@ def mostra_dica_escolhida(dica, dados, pais, lista_cores_dicas, lista_area, list
             return continente
         else:
             return None
+    
+    elif dica == '0':
+        return
 
 def sorteia_letra_capital(dados, pais, lista_letras):
     especiais = ['.', ',', '-', ';', ' ', "'"]
@@ -192,3 +194,26 @@ def sorteia_letra_capital(dados, pais, lista_letras):
 
     return letra
 
+def tamanho_capital(dados, pais):
+    especiais = ['.', ',', '-', ';', ' ', "'"]
+
+    capital = dados[pais]['capital'].lower()
+
+    for especial in especiais:
+        capital = capital.replace(especial, '')
+        
+    return len(capital)
+
+def devolve_opcoes_validas(lista_area, lista_cor_bandeira, tamanho_lista_cores, lista_letra_capital, tamanho_capital):
+    dict = {}
+
+    if len(lista_cor_bandeira) < tamanho_lista_cores:
+        dict['1. Cor da Bandeira'] =  4
+
+    if len(lista_letra_capital) < tamanho_capital:
+        dict['2. Letra da capital'] =  3
+
+    if len(lista_area) == 0:
+        dict['3. Área'] =  6
+
+    return dict

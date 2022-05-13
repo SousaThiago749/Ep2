@@ -3846,22 +3846,39 @@ def main():
     pais = funcoes.sorteia_pais(DADOS_NORMALIZADOS)
     print(pais)
 
+    tamanho_lista_cores = len(DADOS_NORMALIZADOS[pais]['bandeira'].keys())
+
     terminou = False
 
     while not terminou:
 
+      print('Você tem {} tentativa(s)\n'.format(tentativas))
+      if tentativas<=-0:
+        break
+
       resposta = str(input('Qual o seu palpite? '))
 
       if resposta == 'dica' or resposta == 'dicas':
+        dict_opcoes = funcoes.devolve_opcoes_validas(lista_area, lista_dica_cores, 
+                   tamanho_lista_cores, lista_letras_capital, funcoes.tamanho_capital(DADOS_NORMALIZADOS, pais))
 
-        funcoes.desenha_menu_dicas()
+        lista_opcoes = []
+        for dica in dict_opcoes.keys():
+          lista_opcoes.append(dica[0])
+
+        funcoes.desenha_menu_dicas(dict_opcoes, tentativas)
 
         dica_valida = False
 
         while not dica_valida:
-          opcao_dicas = str(input('Escolha sua opção [0|1|2|3|4|5]: '))
+          string = 'Escolha sua opção ['
+          for dica in lista_opcoes[:len(lista_opcoes)]:
+            string = string + dica + '|'
+          
+          string = string[:len(string)-1]
+          string = string + ']: '
 
-          lista_opcoes = ['1', '2', '3', '4', '5', '0']
+          opcao_dicas = str(input(string))
 
           if opcao_dicas in lista_opcoes:
             
@@ -3870,13 +3887,20 @@ def main():
           else:
             print('Opção inválida')
         
-        funcoes.mostra_dica_escolhida(opcao_dicas, DADOS_NORMALIZADOS, pais, lista_dica_cores, lista_area, lista_letras_capital)
+        # Dentro dessa função, retornar a qtd de tentativas a ser excluida
+        # Receber esse numero numa variavel 
+        # Excluir tentativas
+        tentativas_excluidas = funcoes.mostra_dica_escolhida(opcao_dicas, DADOS_NORMALIZADOS, pais, lista_dica_cores,
+                         lista_area, lista_letras_capital)
         funcoes.mostra_inventario(lista_dica_cores, distancias, lista_letras_capital, lista_area)
+    
+        tentativas -= tentativas_excluidas
+
       elif resposta == 'desisto':
-              desistencia = input(str('Tem certeza que deseja desistir da rodada? [s|n] '))
-              if desistencia == 's':
-                print('Fraco, não conseguiu acertar {}'. format(pais))
-                break
+          desistencia = input(str('Tem certeza que deseja desistir da rodada? [s|n] '))
+          if desistencia == 's':
+            print('Fraco, não conseguiu acertar {}'. format(pais))
+            break
     
       else:
         if resposta not in lista_de_paises:
@@ -3893,9 +3917,9 @@ def main():
                 print('Fugiu de mais né?! Fraco!')
                 break
               if jogar_novamente == 'S':
+                print('Um novo país foi sorteado')
                 continuar = True
               
-
             else:
               tentativas-=1
               lista_chutes.append(resposta)
@@ -3903,8 +3927,7 @@ def main():
               lat1, long1, lat2, long2 = funcoes.pega_lat_long_de_pais(DADOS_NORMALIZADOS, pais, resposta)
               dist = funcoes.haversine(EARTH_RADIUS, lat1, long1, lat2, long2)
               lista_distancias.append(dist)
-              #ordem_das_distancias = funcoes.adciona_em_ordem(resposta,dist,distancias)
-
+            
               cor = ''
               if dist < 1000:
                 cor = 'blue'
@@ -3917,8 +3940,7 @@ def main():
 
               distancias[resposta] = {'distancia': dist, 'cor': cor}
 
-              funcoes.mostra_inventario(lista_dica_cores, distancias)
-              print('Você tem {} tentativa(s)\n'.format(tentativas)) #colocar barra n no final de tentativa(s)
+              funcoes.mostra_inventario(lista_dica_cores, distancias, lista_letras_capital, lista_area)
           else:
             print('Você ja tentou esse país')
 
