@@ -39,14 +39,15 @@ def pega_lat_long_de_pais(dadosnormalizados, pais_sorteado, resposta):
     return lat_resposta, long_resposta, lat_sorteado, long_sorteado
     
 
-def adciona_em_ordem(pais,dist,lista):
+def adciona_em_ordem(resposta,dist,lista_chutes):
     contador = 0
-    pais_dist=[pais, dist]
-    for x in lista:
+    pais_dist=[resposta, dist]
+    for x in lista_chutes:
         if dist >x[1]:
             contador = contador + 1
-    lista.insert(contador, pais_dist)
-    return lista
+    lista_chutes.insert(contador, pais_dist) #ou lista_chutes[contador] = pais_dist
+    return lista_chutes
+
     
 def esta_na_lista (pais, lista):
     esta = 0

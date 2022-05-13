@@ -1,6 +1,7 @@
 import math
 import random
 import funcoes
+from termcolor import colored
 
 EARTH_RADIUS = 6371
 
@@ -3841,6 +3842,7 @@ def main():
     distancias = {}
     
     pais = funcoes.sorteia_pais(DADOS_NORMALIZADOS)
+    print(pais)
 
     terminou = False
 
@@ -3869,6 +3871,11 @@ def main():
         cor = funcoes.mostra_dica_escolhida(opcao_dicas, DADOS_NORMALIZADOS, pais, lista_dica_cores)
         lista_dica_cores.append(cor)
         funcoes.mostra_inventario(lista_dica_cores, lista_distancias)
+      elif resposta == 'desisto':
+              desistencia = input(str('Tem certeza que deseja desistir da rodada? [s|n] '))
+              if desistencia == 's':
+                print('Fraco, não conseguiu acertar {}'. format(pais))
+                break
     
       else:
         if resposta not in lista_de_paises:
@@ -3877,12 +3884,25 @@ def main():
           if resposta not in lista_chutes:
             if resposta == pais:
               terminou = True
+              print('Parabens você acertou! Chutou mais que o Pelé né?! Mas foi!')
+              jogar_novamente=str(input('Deseja jogar novamente: S|N: '))
+              if jogar_novamente == 'N':
+                continuar = False
+                print('\n')
+                print('Fugiu de mais né?! Fraco!')
+                break
+              if jogar_novamente == 'S':
+                continuar = True
+              
+
             else:
               tentativas-=1
               lista_chutes.append(resposta)
 
               lat1, long1, lat2, long2 = funcoes.pega_lat_long_de_pais(DADOS_NORMALIZADOS, pais, resposta)
               dist = funcoes.haversine(EARTH_RADIUS, lat1, long1, lat2, long2)
+              lista_distancias.append(dist)
+              #ordem_das_distancias = funcoes.adciona_em_ordem(resposta,dist,distancias)
 
               cor = ''
               if dist < 1000:
