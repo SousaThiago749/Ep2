@@ -1,6 +1,7 @@
 from random import *
 from math import*
 import random
+from turtle import distance
 def normaliza (dicionario):
     novo_dicionario = {}
     for continentes, informacoes_paises in dicionario.items():
@@ -36,8 +37,7 @@ def pega_lat_long_de_pais(dadosnormalizados, pais_sorteado, resposta):
     lat_sorteado = dadosnormalizados[pais_sorteado]['geo']['latitude']
     long_sorteado = dadosnormalizados[pais_sorteado]['geo']['longitude']
 
-    return lat_resposta, long_resposta, lat_sorteado, long_sorteado
-    
+    return lat_resposta, long_resposta, lat_sorteado, long_sorteado    
 
 def adciona_em_ordem(resposta,dist,lista_chutes):
     contador = 0
@@ -47,6 +47,28 @@ def adciona_em_ordem(resposta,dist,lista_chutes):
             contador = contador + 1
     lista_chutes.insert(contador, pais_dist) #ou lista_chutes[contador] = pais_dist
     return lista_chutes
+
+def ordem_das_distancias(distancia):
+    lista_dist = []
+
+    for dict in dist.values():
+        lista_dist.append(dict['distancia'])
+
+    lista_dist.sort()
+
+    novo_dict = {}
+
+    i = 0
+
+    while i != len(lista_dist):
+        for guess, dic in dist.items():
+            if (dic['distancia'] == lista_dist[i]):
+                novo_dict[guess] = {'distancia': dic['distancia'], 'cor' : dic['cor']}
+
+        i+=1
+
+    return novo_dict
+
 
     
 def esta_na_lista (pais, lista):
