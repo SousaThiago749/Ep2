@@ -1,7 +1,7 @@
 import math
 import random
 import funcoes
-
+from termcolor import colored
 
 EARTH_RADIUS = 6371
 
@@ -3840,7 +3840,7 @@ def main():
     lista_chutes = []
     lista_area = []
     lista_letras_capital = []
-
+    novo_dict = []
     distancias = {}
     
     pais = funcoes.sorteia_pais(DADOS_NORMALIZADOS)
@@ -3851,8 +3851,8 @@ def main():
     terminou = False
 
     while not terminou:
-
-      print('Você tem {} tentativa(s)\n'.format(tentativas))
+      cor = 'azul'
+      #print('Você tem'  + colored(cor, tentativas) + 'tentativa(s)')
       if tentativas<=-0:
         break
 
@@ -3892,7 +3892,9 @@ def main():
         # Excluir tentativas
         tentativas_excluidas = funcoes.mostra_dica_escolhida(opcao_dicas, DADOS_NORMALIZADOS, pais, lista_dica_cores,
                          lista_area, lista_letras_capital)
-        funcoes.mostra_inventario(lista_dica_cores, distancias, lista_letras_capital, lista_area)
+
+        novo_dict.append(funcoes.ordem_das_distancias(distancias))
+        funcoes.mostra_inventario(lista_dica_cores, novo_dict, lista_letras_capital, lista_area)
     
         tentativas -= tentativas_excluidas
 
