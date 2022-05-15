@@ -1,7 +1,8 @@
 from random import *
 from math import*
 import random
-from turtle import distance
+from termcolor import colored
+
 def normaliza (dicionario):
     novo_dicionario = {}
     for continentes, informacoes_paises in dicionario.items():
@@ -48,10 +49,11 @@ def adciona_em_ordem(resposta,dist,lista_chutes):
     lista_chutes.insert(contador, pais_dist) #ou lista_chutes[contador] = pais_dist
     return lista_chutes
 
-def ordem_das_distancias(distancia):
+def ordem_das_distancias(distancias):
+    
     lista_dist = []
 
-    for dict in dist.values():
+    for dict in distancias.values():
         lista_dist.append(dict['distancia'])
 
     lista_dist.sort()
@@ -61,7 +63,7 @@ def ordem_das_distancias(distancia):
     i = 0
 
     while i != len(lista_dist):
-        for guess, dic in dist.items():
+        for guess, dic in distancias.items():
             if (dic['distancia'] == lista_dist[i]):
                 novo_dict[guess] = {'distancia': dic['distancia'], 'cor' : dic['cor']}
 
@@ -127,7 +129,7 @@ def desenha_menu_dicas(dict_opcoes, tentativas):
 
     print('----------------------------------------')
 
-def mostra_inventario(lista_cor_bandeira, dict_distancias, lista_letras_capitais, lista_area):
+def mostra_inventario(lista_cor_bandeira, dict_distancias, lista_letras_capitais, lista_area, novo_dict):
     print('')
     print('Distâncias: ')
     
@@ -237,5 +239,7 @@ def devolve_opcoes_validas(lista_area, lista_cor_bandeira, tamanho_lista_cores, 
 
     if len(lista_area) == 0:
         dict['3. Área'] =  6
+    
+
 
     return dict

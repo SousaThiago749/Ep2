@@ -3840,7 +3840,7 @@ def main():
     lista_chutes = []
     lista_area = []
     lista_letras_capital = []
-    novo_dict = []
+    novo_dict = {}
     distancias = {}
     
     pais = funcoes.sorteia_pais(DADOS_NORMALIZADOS)
@@ -3851,8 +3851,8 @@ def main():
     terminou = False
 
     while not terminou:
-      cor = 'azul'
-      #print('Você tem'  + colored(cor, tentativas) + 'tentativa(s)')
+      cor_da_tentativa = 'cyan'
+      print('Você tem ' + colored(tentativas, cor_da_tentativa) + ' tentativa(s)')
       if tentativas<=-0:
         break
 
@@ -3893,7 +3893,6 @@ def main():
         tentativas_excluidas = funcoes.mostra_dica_escolhida(opcao_dicas, DADOS_NORMALIZADOS, pais, lista_dica_cores,
                          lista_area, lista_letras_capital)
 
-        novo_dict.append(funcoes.ordem_das_distancias(distancias))
         funcoes.mostra_inventario(lista_dica_cores, novo_dict, lista_letras_capital, lista_area)
     
         tentativas -= tentativas_excluidas
@@ -3903,6 +3902,9 @@ def main():
           if desistencia == 's':
             print('Fraco, não conseguiu acertar {}'. format(pais))
             break
+      
+      #elif resposta == 'inventario':
+        
     
       else:
         if resposta not in lista_de_paises:
@@ -3929,6 +3931,8 @@ def main():
               lat1, long1, lat2, long2 = funcoes.pega_lat_long_de_pais(DADOS_NORMALIZADOS, pais, resposta)
               dist = funcoes.haversine(EARTH_RADIUS, lat1, long1, lat2, long2)
               lista_distancias.append(dist)
+
+              distancias = funcoes.ordem_das_distancias(distancias)
             
               cor = ''
               if dist < 1000:
@@ -3939,10 +3943,12 @@ def main():
                 cor = 'red'
               else:
                 cor = 'gray'
+              
+              
 
               distancias[resposta] = {'distancia': dist, 'cor': cor}
 
-              funcoes.mostra_inventario(lista_dica_cores, distancias, lista_letras_capital, lista_area)
+              funcoes.mostra_inventario(lista_dica_cores, distancias, lista_letras_capital, lista_area, novo_dict)
           else:
             print('Você ja tentou esse país')
 
