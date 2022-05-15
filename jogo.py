@@ -3840,27 +3840,38 @@ def main():
     lista_chutes = []
     lista_area = []
     lista_letras_capital = []
-    novo_dict = {}
+    lista_populacao = []
+    lista_continente = []
     distancias = {}
     
     pais = funcoes.sorteia_pais(DADOS_NORMALIZADOS)
-    print(pais)
+    #print(pais)
 
     tamanho_lista_cores = len(DADOS_NORMALIZADOS[pais]['bandeira'].keys())
 
     terminou = False
+    ganhou = False
+
+    cor_da_tentativa = 'cyan'
 
     while not terminou:
-      cor_da_tentativa = 'cyan'
+
+      if tentativas<=10:
+        cor_da_tentativa = 'yellow'
+      
+      if tentativas<=5:
+        cor_da_tentativa = 'red'
+
       print('Você tem ' + colored(tentativas, cor_da_tentativa) + ' tentativa(s)')
-      if tentativas<=-0:
-        break
+      if tentativas<=1:
+        terminou = True
+      
 
       resposta = str(input('Qual o seu palpite? '))
 
       if resposta == 'dica' or resposta == 'dicas':
         dict_opcoes = funcoes.devolve_opcoes_validas(lista_area, lista_dica_cores, 
-                   tamanho_lista_cores, lista_letras_capital, funcoes.tamanho_capital(DADOS_NORMALIZADOS, pais))
+                   tamanho_lista_cores, lista_letras_capital, funcoes.tamanho_capital(DADOS_NORMALIZADOS, pais), lista_populacao, lista_continente, tentativas)
 
         lista_opcoes = []
         for dica in dict_opcoes.keys():
@@ -3871,12 +3882,14 @@ def main():
         dica_valida = False
 
         while not dica_valida:
+          
           string = 'Escolha sua opção ['
           for dica in lista_opcoes[:len(lista_opcoes)]:
             string = string + dica + '|'
-          
+        
           string = string[:len(string)-1]
           string = string + ']: '
+
 
           opcao_dicas = str(input(string))
 
@@ -3887,13 +3900,10 @@ def main():
           else:
             print('Opção inválida')
         
-        # Dentro dessa função, retornar a qtd de tentativas a ser excluida
-        # Receber esse numero numa variavel 
-        # Excluir tentativas
         tentativas_excluidas = funcoes.mostra_dica_escolhida(opcao_dicas, DADOS_NORMALIZADOS, pais, lista_dica_cores,
-                         lista_area, lista_letras_capital)
+                         lista_area, lista_letras_capital, lista_populacao, lista_continente)
 
-        funcoes.mostra_inventario(lista_dica_cores, novo_dict, lista_letras_capital, lista_area)
+        funcoes.mostra_inventario(lista_dica_cores, distancias, lista_letras_capital, lista_area, lista_populacao, lista_continente)
     
         tentativas -= tentativas_excluidas
 
@@ -3903,27 +3913,18 @@ def main():
             print('Fraco, não conseguiu acertar {}'. format(pais))
             break
       
-      #elif resposta == 'inventario':
-        
-    
+      elif resposta == 'inventario':
+        funcoes.mostra_inventario(lista_dica_cores, distancias, lista_letras_capital, lista_area)
+
       else:
         if resposta not in lista_de_paises:
           print('Pais desconhecido')
         else:
           if resposta not in lista_chutes:
             if resposta == pais:
+              ganhou = True
               terminou = True
-              print('Parabens você acertou! Chutou mais que o Pelé né?! Mas foi!')
-              jogar_novamente=str(input('Deseja jogar novamente: S|N: '))
-              if jogar_novamente == 'N':
-                continuar = False
-                print('\n')
-                print('Fugiu de mais né?! Fraco!')
-                break
-              if jogar_novamente == 'S':
-                print('Um novo país foi sorteado')
-                continuar = True
-              
+
             else:
               tentativas-=1
               lista_chutes.append(resposta)
@@ -3932,32 +3933,40 @@ def main():
               dist = funcoes.haversine(EARTH_RADIUS, lat1, long1, lat2, long2)
               lista_distancias.append(dist)
 
-              distancias = funcoes.ordem_das_distancias(distancias)
-            
               cor = ''
               if dist < 1000:
+                cor = 'green'
+              elif dist < 2000:
                 cor = 'blue'
-              if dist < 2000:
-                cor = 'yellow'
               elif dist > 2000 and dist < 10000:
-                cor = 'red'
+                cor = 'yellow'
               else:
-                cor = 'gray'
-              
-              
-
+                cor = 'red'
+                            
               distancias[resposta] = {'distancia': dist, 'cor': cor}
 
-              funcoes.mostra_inventario(lista_dica_cores, distancias, lista_letras_capital, lista_area, novo_dict)
+              distancias = funcoes.ordem_das_distancias(distancias)                          
+
+              funcoes.mostra_inventario(lista_dica_cores, distancias, lista_letras_capital, lista_area, lista_populacao, lista_continente)
           else:
             print('Você ja tentou esse país')
+    
+      if terminou == True:
+        if ganhou == True:
+          print('Parabens você acertou! Chutou mais que o Pelé né?! Mas foi!')
 
+        else:
+          print('Ainda bem que você ta fazendo exatas, deu para ver que Geo não é seu forte, o país era: {}'.format(pais))
 
-
+        jogar_novamente=str(input('Deseja jogar novamente: S|N: '))
+        if jogar_novamente == 'N':
+          print('\n')
+          print('Fugiu de mais né?! Fraco!')
+          continuar = False
+        if jogar_novamente == 'S':
+          print('')
+          print('Um novo país foi sorteado')
+          print('')
         
-
-
-
-            
 
 main()
